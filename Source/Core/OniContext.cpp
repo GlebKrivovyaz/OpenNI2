@@ -64,7 +64,7 @@ OniStatus Context::initialize()
 
 	XnStatus rc;
 
-	XnChar strModulePath[XN_FILE_MAX_PATH];
+	/*XnChar strModulePath[XN_FILE_MAX_PATH];
 	rc = xnOSGetModulePathForProcAddress(reinterpret_cast<void*>(&dummyFunctionToTakeAddress), strModulePath);
 	if (rc != XN_STATUS_OK)
 	{
@@ -79,7 +79,9 @@ OniStatus Context::initialize()
 		// Very unlikely to happen, but just in case.
 		m_errorLogger.Append("Couldn't get the OpenNI shared library module's directory: %s", xnGetStatusString(rc));
 		return OniStatusFromXnStatus(rc);
-	}
+	}*/
+	XnChar strBaseDir[XN_FILE_MAX_PATH];
+	strcpy(strBaseDir, ONI_DEFAULT_DRIVERS_REPOSITORY);
 
 	s_valid = TRUE;
 
@@ -97,7 +99,7 @@ OniStatus Context::initialize()
 	}
 
 #ifdef ONI_PLATFORM_ANDROID_OS
-	xnLogSetMaskMinSeverity(XN_LOG_MASK_ALL, (XnLogSeverity)0);
+	xnLogSetMaskMinSeverity(XN_LOG_MASK_ALL, XN_LOG_SEVERITY_NONE);
 	xnLogSetAndroidOutput(TRUE);
 #endif
 
