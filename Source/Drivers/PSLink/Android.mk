@@ -38,4 +38,4 @@ endif
 
 LOCAL_MODULE := PSLink
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)

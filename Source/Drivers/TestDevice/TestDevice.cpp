@@ -417,4 +417,4 @@ protected:
 	xnl::Hash<OniDeviceInfo*, oni::driver::DeviceBase*> m_devices;
 };
 
-ONI_EXPORT_DRIVER(TestDriver);
+ONI_EXPORT_DRIVER(TestDriver, TestDriver);

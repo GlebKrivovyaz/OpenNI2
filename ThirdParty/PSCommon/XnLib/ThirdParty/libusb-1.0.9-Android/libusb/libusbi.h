@@ -140,15 +140,27 @@ void usbi_log_v(struct libusb_context *ctx, enum usbi_log_level level,
 #define _usbi_log(ctx, level, ...) do { (void)(ctx); } while(0)
 #endif
 
-#ifdef ENABLE_DEBUG_LOGGING
-#define usbi_dbg(...) _usbi_log(NULL, LOG_LEVEL_DEBUG, __VA_ARGS__)
+#if defined(ENABLE_DEBUG_LOGGING)
+#  if defined(ANDROID) || defined(__ANDROID__)
+#    include <android/log.h>
+#    define usbi_dbg(...) __android_log_print(ANDROID_LOG_DEBUG, "lynx.libusb", __VA_ARGS)
+#  else
+#    define usbi_dbg(...) _usbi_log(NULL, LOG_LEVEL_DEBUG, __VA_ARGS__)
+#  endif // defined(ANDROID) || defined(__ANDROID__)
 #else
-#define usbi_dbg(...) do {} while(0)
+#  define usbi_dbg(...) do {} while(0)
 #endif
 
-#define usbi_info(ctx, ...) _usbi_log(ctx, LOG_LEVEL_INFO, __VA_ARGS__)
-#define usbi_warn(ctx, ...) _usbi_log(ctx, LOG_LEVEL_WARNING, __VA_ARGS__)
-#define usbi_err(ctx, ...) _usbi_log(ctx, LOG_LEVEL_ERROR, __VA_ARGS__)
+#if defined(ANDROID) || defined(__ANDROID__)
+#  include <android/log.h>
+#  define usbi_info(ctx, ...) __android_log_print(ANDROID_LOG_INFO, "lynx.libusb", __VA_ARGS__)
+#  define usbi_warn(ctx, ...) __android_log_print(ANDROID_LOG_WARN, "lynx.libusb", __VA_ARGS__)
+#  define usbi_err(ctx, ...)  __android_log_print(ANDROID_LOG_ERROR, "lynx.libusb", __VA_ARGS__)
+#else
+# define usbi_info(ctx, ...) _usbi_log(ctx, LOG_LEVEL_INFO, __VA_ARGS__)
+# define usbi_warn(ctx, ...) _usbi_log(ctx, LOG_LEVEL_WARNING, __VA_ARGS__)
+# define usbi_err(ctx, ...) _usbi_log(ctx, LOG_LEVEL_ERROR, __VA_ARGS__)
+#endif // defined(ANDROID) || defined(__ANDROID__)
 
 #else /* !defined(_MSC_VER) || _MSC_VER >= 1400 */
 

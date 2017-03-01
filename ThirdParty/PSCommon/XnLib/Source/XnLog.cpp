@@ -191,6 +191,12 @@ static void xnLogCreateEntry(XnBufferedLogEntry* pEntry, const XnChar* csLogMask
 	va_end(args);
 }
 
+#if XN_PLATFORM == XN_PLATFORM_ANDROID_ARM
+# include <android/log.h>
+static void xnLogWriteEntry(XnLogEntry* pEntry) {
+	__android_log_print(ANDROID_LOG_INFO, "lynx.openni", "%9llu %-10s %s\n", pEntry->nTimestamp, pEntry->strSeverity, pEntry->strMessage);
+}
+#else
 static void xnLogWriteEntry(XnLogEntry* pEntry)
 {
 	LogData& logData = LogData::GetInstance();
@@ -201,6 +207,7 @@ static void xnLogWriteEntry(XnLogEntry* pEntry)
 		pWriter->WriteEntry(pEntry, pWriter->pCookie);
 	}
 }
+#endif // XN_PLATFORM == XN_PLATFORM_ANDROID_ARM
 
 static void xnLogWriteImplV(const XnChar* csLogMask, XnLogSeverity nSeverity, const XnChar* csFile, XnUInt32 nLine, const XnChar* csFormat, va_list args)
 {

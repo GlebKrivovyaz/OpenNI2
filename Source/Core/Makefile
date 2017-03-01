@@ -23,7 +23,9 @@ endif
 LIB_NAME = OpenNI2
 
 LIB_DIRS = ../../ThirdParty/PSCommon/XnLib/Bin/$(PLATFORM)-$(CFG)
-USED_LIBS = XnLib dl pthread
+LIB_DIRS += /usr/lib/x86_64-linux-gnu
+LIB_DIRS += /lib/x86_64-linux-gnu
+USED_LIBS = XnLib dl pthread udev usb-1.0
 ifneq ("$(OSTYPE)","Darwin")
         USED_LIBS += rt  
 endif
@@ -31,5 +33,12 @@ endif
 DEFINES += OPENNI2_EXPORT
 
 CFLAGS += -Wall
+
+LDFLAGS +=  \
+	../../Bin/x64-Release/OpenNI2/Drivers/libPS1080.a \
+	../../Bin/x64-Release/OpenNI2/Drivers/libDummyDevice.a \
+	../../Bin/x64-Release/OpenNI2/Drivers/libOniFile.a \
+	../../Bin/x64-Release/OpenNI2/Drivers/libPSLink.a \
+	../../Bin/x64-Release/libDepthUtils.a
 
 include ../../ThirdParty/PSCommon/BuildSystem/CommonCppMakefile

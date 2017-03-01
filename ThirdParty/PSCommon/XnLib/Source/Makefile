@@ -22,4 +22,7 @@ ifneq ("$(OSTYPE)","Darwin")
 endif
 CFLAGS += -Wall
 
+LIB_DIRS += /usr/lib/x86-64-linux-gnu
+LIB_DIRS += /lib/x86-64-linux-gnu
+
 include ../../BuildSystem/CommonCppMakefile

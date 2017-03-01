@@ -205,174 +205,174 @@ private:
 
 }} // oni::driver
 
-#define ONI_EXPORT_DRIVER(DriverClass)																						\
+#define ONI_EXPORT_DRIVER(DriverClass, SHORT_DRIVER_NAME)																						\
 																															\
-oni::driver::DriverBase* g_pDriver = NULL;																					\
+oni::driver::DriverBase* SHORT_DRIVER_NAME##g_pDriver = NULL;																					\
 																															\
 /* As Driver */																												\
-ONI_C_API_EXPORT void oniDriverCreate(OniDriverServices* driverServices) {													\
-	g_pDriver = XN_NEW(DriverClass, driverServices);																		\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverCreate(OniDriverServices* driverServices) {													\
+	SHORT_DRIVER_NAME##g_pDriver = XN_NEW(DriverClass, driverServices);																		\
 }																															\
-ONI_C_API_EXPORT void oniDriverDestroy()																					\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverDestroy()																					\
 {																															\
-	g_pDriver->shutdown();																									\
-	XN_DELETE(g_pDriver); g_pDriver = NULL;																					\
+	SHORT_DRIVER_NAME##g_pDriver->shutdown();																									\
+	XN_DELETE(SHORT_DRIVER_NAME##g_pDriver); SHORT_DRIVER_NAME##g_pDriver = NULL;																					\
 }																															\
-ONI_C_API_EXPORT OniStatus oniDriverInitialize(oni::driver::DeviceConnectedCallback deviceConnectedCallback,				\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverInitialize(oni::driver::DeviceConnectedCallback deviceConnectedCallback,				\
 										oni::driver::DeviceDisconnectedCallback deviceDisconnectedCallback,					\
 										oni::driver::DeviceStateChangedCallback deviceStateChangedCallback,					\
 										void* pCookie)																		\
 {																															\
-	return g_pDriver->initialize(deviceConnectedCallback, deviceDisconnectedCallback, deviceStateChangedCallback, pCookie);	\
+	return SHORT_DRIVER_NAME##g_pDriver->initialize(deviceConnectedCallback, deviceDisconnectedCallback, deviceStateChangedCallback, pCookie);	\
 }																															\
 																															\
-ONI_C_API_EXPORT OniStatus oniDriverTryDevice(const char* uri)																\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverTryDevice(const char* uri)																\
 {																															\
-	return g_pDriver->tryDevice(uri);																						\
+	return SHORT_DRIVER_NAME##g_pDriver->tryDevice(uri);																						\
 }																															\
 																															\
 /* As Device */																												\
-ONI_C_API_EXPORT oni::driver::DeviceBase* oniDriverDeviceOpen(const char* uri, const char* mode)							\
+ONI_C_API_EXPORT oni::driver::DeviceBase* SHORT_DRIVER_NAME##oniDriverDeviceOpen(const char* uri, const char* mode)							\
 {																															\
-	return g_pDriver->deviceOpen(uri, mode);																				\
+	return SHORT_DRIVER_NAME##g_pDriver->deviceOpen(uri, mode);																				\
 }																															\
-ONI_C_API_EXPORT void oniDriverDeviceClose(oni::driver::DeviceBase* pDevice)												\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverDeviceClose(oni::driver::DeviceBase* pDevice)												\
 {																															\
-	g_pDriver->deviceClose(pDevice);																						\
+	SHORT_DRIVER_NAME##g_pDriver->deviceClose(pDevice);																						\
 }																															\
 																															\
-ONI_C_API_EXPORT OniStatus oniDriverDeviceGetSensorInfoList(oni::driver::DeviceBase* pDevice, OniSensorInfo** pSensorInfos,	\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverDeviceGetSensorInfoList(oni::driver::DeviceBase* pDevice, OniSensorInfo** pSensorInfos,	\
 															int* numSensors)												\
 {																															\
 	return pDevice->getSensorInfoList(pSensorInfos, numSensors);															\
 }																															\
 																															\
-ONI_C_API_EXPORT oni::driver::StreamBase* oniDriverDeviceCreateStream(oni::driver::DeviceBase* pDevice,						\
+ONI_C_API_EXPORT oni::driver::StreamBase* SHORT_DRIVER_NAME##oniDriverDeviceCreateStream(oni::driver::DeviceBase* pDevice,						\
 																		OniSensorType sensorType)							\
 {																															\
 	return pDevice->createStream(sensorType);																				\
 }																															\
 																															\
-ONI_C_API_EXPORT void oniDriverDeviceDestroyStream(oni::driver::DeviceBase* pDevice, oni::driver::StreamBase* pStream)		\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverDeviceDestroyStream(oni::driver::DeviceBase* pDevice, oni::driver::StreamBase* pStream)		\
 {																															\
 	return pDevice->destroyStream(pStream);																					\
 }																															\
 																															\
-ONI_C_API_EXPORT OniStatus oniDriverDeviceSetProperty(oni::driver::DeviceBase* pDevice, int propertyId,						\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverDeviceSetProperty(oni::driver::DeviceBase* pDevice, int propertyId,						\
 													const void* data, int dataSize)											\
 {																															\
 	return pDevice->setProperty(propertyId, data, dataSize);																\
 }																															\
-ONI_C_API_EXPORT OniStatus oniDriverDeviceGetProperty(oni::driver::DeviceBase* pDevice, int propertyId,						\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverDeviceGetProperty(oni::driver::DeviceBase* pDevice, int propertyId,						\
 													void* data, int* pDataSize)												\
 {																															\
 	return pDevice->getProperty(propertyId, data, pDataSize);																\
 }																															\
-ONI_C_API_EXPORT OniBool oniDriverDeviceIsPropertySupported(oni::driver::DeviceBase* pDevice, int propertyId)				\
+ONI_C_API_EXPORT OniBool SHORT_DRIVER_NAME##oniDriverDeviceIsPropertySupported(oni::driver::DeviceBase* pDevice, int propertyId)				\
 {																															\
 	return pDevice->isPropertySupported(propertyId);																		\
 }																															\
-ONI_C_API_EXPORT void oniDriverDeviceSetPropertyChangedCallback(oni::driver::DeviceBase* pDevice,							\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverDeviceSetPropertyChangedCallback(oni::driver::DeviceBase* pDevice,							\
 	oni::driver::PropertyChangedCallback handler, void* pCookie)															\
 {																															\
 	pDevice->setPropertyChangedCallback(handler, pCookie);																	\
 }																															\
-ONI_C_API_EXPORT void oniDriverDeviceNotifyAllProperties(oni::driver::DeviceBase* pDevice)									\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverDeviceNotifyAllProperties(oni::driver::DeviceBase* pDevice)									\
 {																															\
 	pDevice->notifyAllProperties();																							\
 }																															\
-ONI_C_API_EXPORT OniStatus oniDriverDeviceInvoke(oni::driver::DeviceBase* pDevice, int commandId,							\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverDeviceInvoke(oni::driver::DeviceBase* pDevice, int commandId,							\
 												void* data, int dataSize)													\
 {																															\
 	return pDevice->invoke(commandId, data, dataSize);																		\
 }																															\
-ONI_C_API_EXPORT OniBool oniDriverDeviceIsCommandSupported(oni::driver::DeviceBase* pDevice, int commandId)					\
+ONI_C_API_EXPORT OniBool SHORT_DRIVER_NAME##oniDriverDeviceIsCommandSupported(oni::driver::DeviceBase* pDevice, int commandId)					\
 {																															\
 	return pDevice->isCommandSupported(commandId);																			\
 }																															\
-ONI_C_API_EXPORT OniStatus oniDriverDeviceTryManualTrigger(oni::driver::DeviceBase* pDevice)								\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverDeviceTryManualTrigger(oni::driver::DeviceBase* pDevice)								\
 {																															\
 	return pDevice->tryManualTrigger();																						\
 }																															\
-ONI_C_API_EXPORT OniBool oniDriverDeviceIsImageRegistrationModeSupported(oni::driver::DeviceBase* pDevice,					\
+ONI_C_API_EXPORT OniBool SHORT_DRIVER_NAME##oniDriverDeviceIsImageRegistrationModeSupported(oni::driver::DeviceBase* pDevice,					\
 	OniImageRegistrationMode mode)																							\
 {																															\
 	return pDevice->isImageRegistrationModeSupported(mode);																	\
 }																															\
 																															\
 /* As Stream */																												\
-ONI_C_API_EXPORT void oniDriverStreamSetServices(oni::driver::StreamBase* pStream, OniStreamServices* pServices)			\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverStreamSetServices(oni::driver::StreamBase* pStream, OniStreamServices* pServices)			\
 {																															\
 	pStream->setServices((oni::driver::StreamServices*)pServices);															\
 }																															\
 																															\
-ONI_C_API_EXPORT OniStatus oniDriverStreamSetProperty(oni::driver::StreamBase* pStream, int propertyId,						\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverStreamSetProperty(oni::driver::StreamBase* pStream, int propertyId,						\
 													const void* data, int dataSize)											\
 {																															\
 	return pStream->setProperty(propertyId, data, dataSize);																\
 }																															\
-ONI_C_API_EXPORT OniStatus oniDriverStreamGetProperty(oni::driver::StreamBase* pStream, int propertyId, void* data,			\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverStreamGetProperty(oni::driver::StreamBase* pStream, int propertyId, void* data,			\
 													int* pDataSize)															\
 {																															\
 	return pStream->getProperty(propertyId, data, pDataSize);																\
 }																															\
-ONI_C_API_EXPORT OniBool oniDriverStreamIsPropertySupported(oni::driver::StreamBase* pStream, int propertyId)				\
+ONI_C_API_EXPORT OniBool SHORT_DRIVER_NAME##oniDriverStreamIsPropertySupported(oni::driver::StreamBase* pStream, int propertyId)				\
 {																															\
 	return pStream->isPropertySupported(propertyId);																		\
 }																															\
-ONI_C_API_EXPORT void oniDriverStreamSetPropertyChangedCallback(oni::driver::StreamBase* pStream,							\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverStreamSetPropertyChangedCallback(oni::driver::StreamBase* pStream,							\
 													oni::driver::PropertyChangedCallback handler, void* pCookie)			\
 {																															\
 	pStream->setPropertyChangedCallback(handler, pCookie);																	\
 }																															\
-ONI_C_API_EXPORT void oniDriverStreamNotifyAllProperties(oni::driver::StreamBase* pStream)									\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverStreamNotifyAllProperties(oni::driver::StreamBase* pStream)									\
 {																															\
 	pStream->notifyAllProperties();																							\
 }																															\
-ONI_C_API_EXPORT OniStatus oniDriverStreamInvoke(oni::driver::StreamBase* pStream, int commandId,							\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverStreamInvoke(oni::driver::StreamBase* pStream, int commandId,							\
 												void* data, int dataSize)													\
 {																															\
 	return pStream->invoke(commandId, data, dataSize);																		\
 }																															\
-ONI_C_API_EXPORT OniBool oniDriverStreamIsCommandSupported(oni::driver::StreamBase* pStream, int commandId)					\
+ONI_C_API_EXPORT OniBool SHORT_DRIVER_NAME##oniDriverStreamIsCommandSupported(oni::driver::StreamBase* pStream, int commandId)					\
 {																															\
 	return pStream->isCommandSupported(commandId);																			\
 }																															\
 																															\
-ONI_C_API_EXPORT OniStatus oniDriverStreamStart(oni::driver::StreamBase* pStream)											\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverStreamStart(oni::driver::StreamBase* pStream)											\
 {																															\
 	return pStream->start();																								\
 }																															\
-ONI_C_API_EXPORT void oniDriverStreamStop(oni::driver::StreamBase* pStream)													\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverStreamStop(oni::driver::StreamBase* pStream)													\
 {																															\
 	pStream->stop();																										\
 }																															\
 																															\
-ONI_C_API_EXPORT int oniDriverStreamGetRequiredFrameSize(oni::driver::StreamBase* pStream)									\
+ONI_C_API_EXPORT int SHORT_DRIVER_NAME##oniDriverStreamGetRequiredFrameSize(oni::driver::StreamBase* pStream)									\
 {																															\
 	return pStream->getRequiredFrameSize();																					\
 }																															\
 																															\
-ONI_C_API_EXPORT void oniDriverStreamSetNewFrameCallback(oni::driver::StreamBase* pStream,									\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverStreamSetNewFrameCallback(oni::driver::StreamBase* pStream,									\
 														oni::driver::NewFrameCallback handler, void* pCookie)				\
 {																															\
 	pStream->setNewFrameCallback(handler, pCookie);																			\
 }																															\
 																															\
-ONI_C_API_EXPORT OniStatus oniDriverStreamConvertDepthToColorCoordinates(oni::driver::StreamBase* pDepthStream,				\
+ONI_C_API_EXPORT OniStatus SHORT_DRIVER_NAME##oniDriverStreamConvertDepthToColorCoordinates(oni::driver::StreamBase* pDepthStream,				\
 	oni::driver::StreamBase* pColorStream, int depthX, int depthY, OniDepthPixel depthZ, int* pColorX, int* pColorY)		\
 {																															\
 	return pDepthStream->convertDepthToColorCoordinates(pColorStream, depthX, depthY, depthZ, pColorX, pColorY);			\
 }																															\
 																															\
-ONI_C_API_EXPORT void* oniDriverEnableFrameSync(oni::driver::StreamBase** pStreams, int streamCount)						\
+ONI_C_API_EXPORT void* SHORT_DRIVER_NAME##oniDriverEnableFrameSync(oni::driver::StreamBase** pStreams, int streamCount)						\
 {																															\
-	return g_pDriver->enableFrameSync(pStreams, streamCount);																\
+	return SHORT_DRIVER_NAME##g_pDriver->enableFrameSync(pStreams, streamCount);																\
 }																															\
 																															\
-ONI_C_API_EXPORT void oniDriverDisableFrameSync(void* frameSyncGroup)														\
+ONI_C_API_EXPORT void SHORT_DRIVER_NAME##oniDriverDisableFrameSync(void* frameSyncGroup)														\
 {																															\
-	return g_pDriver->disableFrameSync(frameSyncGroup);																		\
+	return SHORT_DRIVER_NAME##g_pDriver->disableFrameSync(frameSyncGroup);																		\
 }																															\
 
 #endif // _ONI_DRIVER_API_H_

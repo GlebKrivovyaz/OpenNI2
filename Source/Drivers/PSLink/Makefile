@@ -33,6 +33,7 @@ endif
 CFLAGS += -Wall
 
 LIB_NAME = PSLink
+SLIB_NAME = PSLink
 
 OUT_DIR := $(OUT_DIR)/OpenNI2/Drivers
 

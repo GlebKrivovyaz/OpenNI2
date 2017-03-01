@@ -16,6 +16,7 @@ ifeq ("$(OSTYPE)","Darwin")
 endif
 
 LIB_NAME = DummyDevice
+SLIB_NAME = DummyDevice
 
 LIB_DIRS = ../../../ThirdParty/PSCommon/XnLib/Bin/$(PLATFORM)-$(CFG)
 USED_LIBS = XnLib dl pthread

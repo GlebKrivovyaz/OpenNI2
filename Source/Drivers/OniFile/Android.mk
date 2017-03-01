@@ -60,4 +60,4 @@ endif
 # Output
 LOCAL_MODULE:= libOniFile
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)

@@ -51,8 +51,8 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../Include
 LOCAL_LDFLAGS := -Wl,--export-dynamic
 
 # Dependencies
-LOCAL_STATIC_LIBRARIES := XnLib
-LOCAL_SHARED_LIBRARIES := liblog libdl
+LOCAL_STATIC_LIBRARIES := XnLib PS1080 OniFile PSLink
+LOCAL_SHARED_LIBRARIES := liblog libdl libusb
 
 ifdef OPENNI2_ANDROID_OS_BUILD
     LOCAL_SHARED_LIBRARIES += libjpeg

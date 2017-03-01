@@ -475,4 +475,10 @@ protected:
 	xnl::Hash<OniDeviceInfo*, oni::driver::DeviceBase*> m_devices;
 };
 
-ONI_EXPORT_DRIVER(OzDriver);
+#ifndef __DUMMY_DRIV_EXPORT
+#define __DUMMY_DRIV_EXPORT
+
+ONI_EXPORT_DRIVER(OzDriver, OzDriver);
+
+#endif // __DUMMY_DRIV_EXPORT
+

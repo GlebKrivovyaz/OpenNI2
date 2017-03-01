@@ -64,4 +64,4 @@ endif
 # Output
 LOCAL_MODULE:= libPS1080
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)

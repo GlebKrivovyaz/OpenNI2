@@ -78,11 +78,15 @@ DeviceDriver::DeviceDriver(const char* strDriverFilename, FrameManager& frameMan
 }
 bool DeviceDriver::initialize()
 {
-	if (!isValid())
+	if (!isValid()) {
+    xnLogInfo("DeviceDriver", "DeviceDriver was not valid.");
 		return false;
+  }
 
-	if (ONI_STATUS_OK != m_driverHandler.initialize(driver_DeviceConnected, driver_DeviceDisconnected, driver_DeviceStateChanged, this))
+	if (ONI_STATUS_OK != m_driverHandler.initialize(driver_DeviceConnected, driver_DeviceDisconnected, driver_DeviceStateChanged, this)) {
+    xnLogInfo("DeviceDriver", "DeviceDriver did not pass handler.initialize");
 		return false;
+  }
 
 	return true;
 }

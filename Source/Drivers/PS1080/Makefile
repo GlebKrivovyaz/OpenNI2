@@ -27,6 +27,7 @@ ifeq ("$(OSTYPE)","Darwin")
 endif
 
 LIB_NAME = PS1080
+SLIB_NAME = PS1080
 
 LIB_DIRS += ../../../ThirdParty/PSCommon/XnLib/Bin/$(PLATFORM)-$(CFG)
 LIB_DIRS += $(BIN_DIR)/$(PLATFORM)-$(CFG)

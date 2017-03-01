@@ -216,4 +216,4 @@ void CALLBACK KinectDriver::StatusProc( HRESULT hrStatus, const OLECHAR* instanc
 	((KinectDriver*)pUserData)->StatusUpdate(instanceName,SUCCEEDED( hrStatus ));
 }
 
-ONI_EXPORT_DRIVER(kinect_device::KinectDriver)
+ONI_EXPORT_DRIVER(kinect_device::KinectDriver, KinectDriver)

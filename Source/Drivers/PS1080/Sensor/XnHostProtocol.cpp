@@ -1097,6 +1097,7 @@ XnStatus XnHostProtocolExecute(const XnDevicePrivateData* pDevicePrivateData,
 	}
 
 	XnUInt32 nTimeOut = XnHostProtocolGetTimeOut(pDevicePrivateData, nOpcode);
+	xnLogVerbose(XN_MASK_SENSOR_PROTOCOL, "Protocol execute with timeout: %d", nTimeOut);
 
 	// store request (in case we need to retry it)
 	XnUChar request[MAX_PACKET_SIZE];
@@ -1131,6 +1132,7 @@ XnStatus XnHostProtocolExecute(const XnDevicePrivateData* pDevicePrivateData,
 
 		// Send request
 		rc = XnHostProtocolUSBSend(pDevicePrivateData, request, nSize, nTimeOut, bForceBulk);
+		xnLogVerbose(XN_MASK_SENSOR_PROTOCOL, "XnHostProtocolUSBSend returned, rc = %d", rc);
 		if (rc != XN_STATUS_OK)
 		{
 			xnOSUnLockMutex(pDevicePrivateData->hExecuteMutex);

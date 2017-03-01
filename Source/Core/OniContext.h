@@ -112,6 +112,7 @@ private:
 	Context(const Context& other);
 	Context& operator=(const Context&other);
 
+	XnStatus loadLibrariesStatic();
 	XnStatus loadLibraries(const char* directoryName);
 	void onNewFrame();
 	XN_EVENT_HANDLE getThreadEvent();

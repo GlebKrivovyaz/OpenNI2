@@ -21,12 +21,17 @@
 //---------------------------------------------------------------------------
 // Includes
 //---------------------------------------------------------------------------
+#ifndef __PSLINK_DRIV_EXPORT
+#define __PSLINK_DRIV_EXPORT
+
 #include "LinkOniDriver.h"
 
 //---------------------------------------------------------------------------
 // LinkOniDriver EXPORT
 //---------------------------------------------------------------------------
-ONI_EXPORT_DRIVER(LinkOniDriver);
+ONI_EXPORT_DRIVER(LinkOniDriver, LinkOniDriver);
 
 // The following line is needed to be once in *ALL* of the high level shared library modules. DO NOT REMOVE!!! 
 XN_API_EXPORT_INIT()
+
+#endif // __PSLINK_DRIV_EXPORT

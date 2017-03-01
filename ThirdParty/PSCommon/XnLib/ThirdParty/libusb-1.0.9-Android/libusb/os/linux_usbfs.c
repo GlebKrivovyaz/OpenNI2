@@ -212,8 +212,13 @@ static int check_usb_vfs(const char *dirname)
 
 static const char *find_usbfs_path(void)
 {
-// *** PrimeSense patch for Android *** 
-// Note: this func originally searched '/dev/bus/usb' before /proc/bus/usb. The order was reversed because it's currently easier to manage the /proc usbfs permissions
+  const char *androidRet = "/dev/bus/usb";
+  usbi_dbg("statically defined usbfs at %s", androidRet);
+  return androidRet;
+
+  /*
+  // *** PrimeSense patch for Android *** 
+  // Note: this func originally searched '/dev/bus/usb' before /proc/bus/usb. The order was reversed because it's currently easier to manage the /proc usbfs permissions
 	const char *path = "/proc/bus/usb";
 	const char *ret = NULL;
 
@@ -224,9 +229,9 @@ static const char *find_usbfs_path(void)
 		if (check_usb_vfs(path))
 			ret = path;
 	}
-// *** PrimeSense patch for Android ***
+  // *** PrimeSense patch for Android ***
 	
-	/* look for /dev/usbdev*.* if the normal places fail */
+	// look for /dev/usbdev*.* if the normal places fail
 	if (ret == NULL) {
 		struct dirent *entry;
 		DIR *dir;
@@ -236,7 +241,7 @@ static const char *find_usbfs_path(void)
 		if (dir != NULL) {
 			while ((entry = readdir(dir)) != NULL) {
 				if (_is_usbdev_entry(entry, NULL, NULL)) {
-					/* found one; that's enough */
+					// found one; that's enough
 					ret = path;
 					usbdev_names = 1;
 					break;
@@ -250,6 +255,7 @@ static const char *find_usbfs_path(void)
 		usbi_dbg("found usbfs at %s", ret);
 
 	return ret;
+  */
 }
 
 /* the monotonic clock is not usable on all systems (e.g. embedded ones often

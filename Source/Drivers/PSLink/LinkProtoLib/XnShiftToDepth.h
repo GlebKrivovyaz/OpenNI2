@@ -51,17 +51,17 @@ typedef struct XnShiftToDepthTables
 //---------------------------------------------------------------------------
 // Functions Declaration
 //---------------------------------------------------------------------------
-XnStatus XnShiftToDepthInit(XnShiftToDepthTables* pShiftToDepth, 
-							const XnShiftToDepthConfig* pConfig);
+XnStatus XnShiftToDepthInit_PSLink(XnShiftToDepthTables* pShiftToDepth, const XnShiftToDepthConfig* pConfig);
+XnStatus XnShiftToDepthUpdate_PSLink(XnShiftToDepthTables* pShiftToDepth, const XnShiftToDepthConfig* pConfig);
+XnStatus XnShiftToDepthConvert_PSLink(const XnShiftToDepthTables* pShiftToDepth, const XnUInt16* pInput, XnUInt32 nInputSize, OniDepthPixel* pOutput);
+XnStatus XnShiftToDepthFree_PSLink(XnShiftToDepthTables* pShiftToDepth);
 
-XnStatus XnShiftToDepthUpdate(XnShiftToDepthTables* pShiftToDepth, 
-							  const XnShiftToDepthConfig* pConfig);
-
-XnStatus XnShiftToDepthConvert(const XnShiftToDepthTables* pShiftToDepth, 
-							   const XnUInt16* pInput, 
-							   XnUInt32 nInputSize, 
-							   OniDepthPixel* pOutput);
-
-XnStatus XnShiftToDepthFree(XnShiftToDepthTables* pShiftToDepth);
+# if !defined(OPENNI_DRIVER_IS_SELECTED)
+#  define OPENNI_DRIVER_IS_SELECTED "PSLink"
+#  define XnShiftToDepthInit XnShiftToDepthInit_PSLink
+#  define XnShiftToDepthUpdate XnShiftToDepthUpdate_PSLink
+#  define XnShiftToDepthConvert XnShiftToDepthConvert_PSLink
+#  define XnShiftToDepthFree XnShiftToDepthFree_PSLink
+# endif // !defined(OPENNI_DRIVER_IS_SELECTED)
 
 #endif //_XN_SHIFT_TO_DEPTH_H_

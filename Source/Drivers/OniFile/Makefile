@@ -23,6 +23,7 @@ ifeq ("$(OSTYPE)","Darwin")
 endif
 
 LIB_NAME = OniFile
+SLIB_NAME = OniFile
 
 LIB_DIRS = ../../../ThirdParty/PSCommon/XnLib/Bin/$(PLATFORM)-$(CFG)
 USED_LIBS = XnLib pthread 

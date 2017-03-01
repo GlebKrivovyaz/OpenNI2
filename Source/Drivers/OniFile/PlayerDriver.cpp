@@ -52,7 +52,7 @@ driver::DeviceBase* PlayerDriver::deviceOpen(const char* strUri, const char* /*m
 	{
 		return NULL;
 	}
-	
+
 	pDevice->SetEOFEventCallback(EOFReached, this);
 
 	OniStatus rc = pDevice->Initialize();
@@ -76,7 +76,7 @@ void PlayerDriver::shutdown()
 
 OniStatus PlayerDriver::tryDevice(const char* strUri)
 {
-	static XnPlayerInputStreamInterface inputInterface = 
+	static XnPlayerInputStreamInterface inputInterface =
 	{
 		FileOpen,
 		FileRead,
@@ -142,4 +142,10 @@ void XN_CALLBACK_TYPE PlayerDriver::EOFReached(void* pCookie, const char *strUri
 
 } // namespace oni_file
 
-ONI_EXPORT_DRIVER(oni_file::PlayerDriver)
+#ifndef __ONIFILE_DRIV_EXPORT
+#define __ONIFILE_DRIV_EXPORT
+
+ONI_EXPORT_DRIVER(oni_file::PlayerDriver, PlayerDriver)
+
+#endif // __ONIFILE_DRIV_EXPORT
+
