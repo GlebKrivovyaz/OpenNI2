@@ -194,7 +194,8 @@ static void xnLogCreateEntry(XnBufferedLogEntry* pEntry, const XnChar* csLogMask
 #if XN_PLATFORM == XN_PLATFORM_ANDROID_ARM
 # include <android/log.h>
 static void xnLogWriteEntry(XnLogEntry* pEntry) {
-	__android_log_print(ANDROID_LOG_INFO, "lynx.openni", "%9llu %-10s %s\n", pEntry->nTimestamp, pEntry->strSeverity, pEntry->strMessage);
+	// TODO: enable logs back? disabled due to performance issues
+	//__android_log_print(ANDROID_LOG_INFO, "lynx.openni", "%9llu %-10s %s\n", pEntry->nTimestamp, pEntry->strSeverity, pEntry->strMessage);
 }
 #else
 static void xnLogWriteEntry(XnLogEntry* pEntry)
