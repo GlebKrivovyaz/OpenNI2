@@ -164,6 +164,7 @@ XN_C_API XnStatus xnOSStopTimer(XnOSTimer* pTimer)
 
 XN_C_API XnStatus xnOSGetMonoTime(struct timespec* pTime)
 {
+	// TODO: replace with linux/android timestamps to avoid desync issues
 #ifndef XN_PLATFORM_HAS_NO_CLOCK_GETTIME
 	if (0 != clock_gettime(CLOCK_REALTIME, pTime))
 	{
