@@ -20,3 +20,6 @@ Redist/Final
 Redist/compile.log
 Redist/OpenNI-*
 Source/Documentation/html
+Packaging/AndroidBuild
+Packaging/Final
+Packaging/OpenNI-android-2.2
