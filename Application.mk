@@ -23,3 +23,5 @@ APP_PLATFORM := android-9
 # Use ARM v7a instruction set
 APP_ABI := armeabi-v7a
 ARCH_ARM_HAVE_ARMV7A := true
+APP_STL := c++_shared
+NDK_TOOLCHAIN_VERSION := clang

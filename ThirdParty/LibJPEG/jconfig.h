@@ -4,7 +4,7 @@
 #elif SN_TARGET_PS3
 	#include "jconfig.ps3"
 	#include <stdio.h>
-#elif ((linux) || (__APPLE__))
+#elif ((linux) || (__APPLE__) || (ANDROID))
 	#include "jconfig.lnx86"
 	#include <stdio.h>
 #else
