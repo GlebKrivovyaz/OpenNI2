@@ -364,43 +364,23 @@ static int op_init(struct libusb_context *ctx)
 
 	r = stat(SYSFS_DEVICE_PATH, &statbuf);
 	if (r == 0 && S_ISDIR(statbuf.st_mode)) {
-		DIR *devices = opendir(SYSFS_DEVICE_PATH);
-		struct dirent *entry;
-
 		usbi_dbg("found usb devices in sysfs");
 
-		if (!devices) {
-			usbi_err(ctx, "opendir devices failed errno=%d", errno);
-			return LIBUSB_ERROR_IO;
-		}
+        //directory scan fails under Android 9
+        //use hardcoded path ranges instead
 
-		/* Make sure sysfs supports all the required files. If it
-		 * does not, then usbfs will be used instead.  Determine
-		 * this by looping through the directories in
-		 * SYSFS_DEVICE_PATH.  With the assumption that there will
-		 * always be subdirectories of the name usbN (usb1, usb2,
-		 * etc) representing the root hubs, check the usbN
-		 * subdirectories to see if they have all the needed files.
-		 * This algorithm uses the usbN subdirectories (root hubs)
-		 * because a device disconnection will cause a race
-		 * condition regarding which files are available, sometimes
-		 * causing an incorrect result.  The root hubs are used
-		 * because it is assumed that they will always be present.
-		 * See the "sysfs vs usbfs" comment at the top of this file
-		 * for more details.  */
-		while ((entry = readdir(devices))) {
+        for (int usbNumber = 0; usbNumber <= 9; ++usbNumber) {
 			int has_busnum=0, has_devnum=0, has_descriptors=0;
 			int has_configuration_value=0;
 
-			/* Only check the usbN directories. */
-			if (strncmp(entry->d_name, "usb", 3) != 0)
-				continue;
+			char dirName[256];
+			snprintf(dirName, sizeof dirName, "usb%d", usbNumber);
 
 			/* Check for the files libusb needs from sysfs. */
-			has_busnum = sysfs_has_file(entry->d_name, "busnum");
-			has_devnum = sysfs_has_file(entry->d_name, "devnum");
-			has_descriptors = sysfs_has_file(entry->d_name, "descriptors");
-			has_configuration_value = sysfs_has_file(entry->d_name, "bConfigurationValue");
+			has_busnum = sysfs_has_file(dirName, "busnum");
+			has_devnum = sysfs_has_file(dirName, "devnum");
+			has_descriptors = sysfs_has_file(dirName, "descriptors");
+			has_configuration_value = sysfs_has_file(dirName, "bConfigurationValue");
 
 			if (has_busnum && has_devnum && has_configuration_value)
 				sysfs_can_relate_devices = 1;
@@ -412,7 +392,6 @@ static int op_init(struct libusb_context *ctx)
 			if (sysfs_has_descriptors && sysfs_can_relate_devices)
 				break;
 		}
-		closedir(devices);
 
 		/* Only use sysfs descriptors if the rest of
 		   sysfs will work for libusb. */
@@ -1170,24 +1149,20 @@ static int sysfs_get_device_list(struct libusb_context *ctx,
 	struct discovered_devs **_discdevs)
 {
 	struct discovered_devs *discdevs = *_discdevs;
-	DIR *devices = opendir(SYSFS_DEVICE_PATH);
-	struct dirent *entry;
 	int r = LIBUSB_ERROR_IO;
 
-	if (!devices) {
-		usbi_err(ctx, "opendir devices failed errno=%d", errno);
-		return r;
-	}
+	//directory scan fails under Android 9
+	//use hardcoded path ranges instead
 
-	while ((entry = readdir(devices))) {
-		struct discovered_devs *discdevs_new = discdevs;
+    // usbX format
 
-		if ((!isdigit(entry->d_name[0]) && strncmp(entry->d_name, "usb", 3))
-				|| strchr(entry->d_name, ':'))
-			continue;
+    for (int usbNumber = 0; usbNumber < 10; ++usbNumber) {
+        char dirName[256];
+        snprintf(dirName, sizeof dirName, "usb%d", usbNumber);
 
-		if (sysfs_scan_device(ctx, &discdevs_new, entry->d_name)) {
-			usbi_dbg("failed to enumerate dir entry %s", entry->d_name);
+        struct discovered_devs *discdevs_new = discdevs;
+
+		if (sysfs_scan_device(ctx, &discdevs_new, dirName)) {
 			continue;
 		}
 
@@ -1195,9 +1170,29 @@ static int sysfs_get_device_list(struct libusb_context *ctx,
 		discdevs = discdevs_new;
 	}
 
+	// X-X format (works for structure sensor)
+
+	for (int usbNumber1 = 0; usbNumber1 < 10; ++usbNumber1) {
+		for (int usbNumber2 = 0; usbNumber2 < 10; ++usbNumber2)
+		{
+			char dirName[256];
+			snprintf(dirName, sizeof dirName, "%d-%d", usbNumber1, usbNumber2);
+
+			struct discovered_devs* discdevs_new = discdevs;
+
+			if (sysfs_scan_device(ctx, &discdevs_new, dirName))
+			{
+				continue;
+			}
+
+			r = 0;
+			discdevs = discdevs_new;
+		}
+	}
+
 	if (!r)
 		*_discdevs = discdevs;
-	closedir(devices);
+
 	return r;
 }
 
